@@ -7,7 +7,7 @@ private:
 	struct ColorVertex
 	{
 		D3DXVECTOR3 position;
-		D3DXCOLOR color;
+		D3DXVECTOR4 color;
 	};
 
 public:
