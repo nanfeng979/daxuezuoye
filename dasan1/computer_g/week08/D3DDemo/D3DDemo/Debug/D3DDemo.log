@@ -1,0 +1,50 @@
+﻿  InitD3DApp.cpp
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(12,1): warning C4005: “DXGI_STATUS_OCCLUDED”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56388): message : 参见“DXGI_STATUS_OCCLUDED”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(13,1): warning C4005: “DXGI_STATUS_CLIPPED”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56397): message : 参见“DXGI_STATUS_CLIPPED”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(14,1): warning C4005: “DXGI_STATUS_NO_REDIRECTION”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56406): message : 参见“DXGI_STATUS_NO_REDIRECTION”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(15,1): warning C4005: “DXGI_STATUS_NO_DESKTOP_ACCESS”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56415): message : 参见“DXGI_STATUS_NO_DESKTOP_ACCESS”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(16,1): warning C4005: “DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56424): message : 参见“DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(17,1): warning C4005: “DXGI_STATUS_MODE_CHANGED”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56433): message : 参见“DXGI_STATUS_MODE_CHANGED”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(18,1): warning C4005: “DXGI_STATUS_MODE_CHANGE_IN_PROGRESS”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56442): message : 参见“DXGI_STATUS_MODE_CHANGE_IN_PROGRESS”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(21,1): warning C4005: “DXGI_ERROR_INVALID_CALL”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56457): message : 参见“DXGI_ERROR_INVALID_CALL”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(22,1): warning C4005: “DXGI_ERROR_NOT_FOUND”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56466): message : 参见“DXGI_ERROR_NOT_FOUND”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(23,1): warning C4005: “DXGI_ERROR_MORE_DATA”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56475): message : 参见“DXGI_ERROR_MORE_DATA”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(24,1): warning C4005: “DXGI_ERROR_UNSUPPORTED”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56484): message : 参见“DXGI_ERROR_UNSUPPORTED”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(25,1): warning C4005: “DXGI_ERROR_DEVICE_REMOVED”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56493): message : 参见“DXGI_ERROR_DEVICE_REMOVED”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(26,1): warning C4005: “DXGI_ERROR_DEVICE_HUNG”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56502): message : 参见“DXGI_ERROR_DEVICE_HUNG”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(27,1): warning C4005: “DXGI_ERROR_DEVICE_RESET”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56512): message : 参见“DXGI_ERROR_DEVICE_RESET”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(28,1): warning C4005: “DXGI_ERROR_WAS_STILL_DRAWING”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56521): message : 参见“DXGI_ERROR_WAS_STILL_DRAWING”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(29,1): warning C4005: “DXGI_ERROR_FRAME_STATISTICS_DISJOINT”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56531): message : 参见“DXGI_ERROR_FRAME_STATISTICS_DISJOINT”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(30,1): warning C4005: “DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56540): message : 参见“DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(31,1): warning C4005: “DXGI_ERROR_DRIVER_INTERNAL_ERROR”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56550): message : 参见“DXGI_ERROR_DRIVER_INTERNAL_ERROR”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(32,1): warning C4005: “DXGI_ERROR_NONEXCLUSIVE”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56559): message : 参见“DXGI_ERROR_NONEXCLUSIVE”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(33,1): warning C4005: “DXGI_ERROR_NOT_CURRENTLY_AVAILABLE”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56568): message : 参见“DXGI_ERROR_NOT_CURRENTLY_AVAILABLE”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(34,1): warning C4005: “DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56578): message : 参见“DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\dxgitype.h(35,1): warning C4005: “DXGI_ERROR_REMOTE_OUTOFMEMORY”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56587): message : 参见“DXGI_ERROR_REMOTE_OUTOFMEMORY”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\D3D10.h(608,1): warning C4005: “D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56841): message : 参见“D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”的前一个定义
+D:\1daxuezuoye\dasan1\computer_g\base_code\sdk\Include\D3D10.h(609,1): warning C4005: “D3D10_ERROR_FILE_NOT_FOUND”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\winerror.h(56850): message : 参见“D3D10_ERROR_FILE_NOT_FOUND”的前一个定义
+  D3DDemo.vcxproj -> D:\1daxuezuoye\dasan1\computer_g\week08\D3DDemo\Debug\D3DDemo.exe
