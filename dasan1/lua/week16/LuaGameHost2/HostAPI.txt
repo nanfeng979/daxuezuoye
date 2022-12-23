@@ -1,0 +1,55 @@
+//Image
+int LoadImage(fileName)
+int SetColorKey(imageID,colorKey)
+int PaintImage(imageID,x,y)
+int StretchPaintImage(imageID,left,top,width,height,srcLeft,srcTop,srcWidth,srcHeight)
+int FillRectangle(color, left,top,right,bottom)
+int TextOut(str, x,y,color)
+int Show()
+int DeleteImage(imageID)
+int DeleteAllImage()
+
+//Input
+int GetKeyState( iScanCode )
+int GetKeyAction( iScanCode,hitDown )
+int GetAnyKeyState(  )
+void EnableKeyDelay(  )
+void DisableKeyDelay(  )
+int GetMouseButtonState( iButtinID )
+bool GetMouseButtonAction(ibuttonID,hitDown)
+int GetMouseXOffset(  )
+int GetMouseYOffset(  )
+int GetMouseZOffset(  )
+
+//Sound
+int LoadSound(str)
+int ReplicateSound( id )
+int PlaySound(id,loop)
+int StopSound(id)
+int StopAllSounds()
+int DeleteSound(id)
+ int DeleteAllSounds()
+bool GetSoundStatus
+int SetSoundVolue(id,vol)
+int SetSoundFreq(id,freq)
+int SetSoundPan(id,pan)
+
+//MIDI
+int LoadMIDI(str)
+int PlayMIDI(id)
+int StopMIDI(id)
+int DeleteAllMIDI()
+int DeleteMIDI(id)
+bool GetMIDIStatus(id)
+
+//Timer
+int InitTimer( iLength )
+bool GetTimerState ( id )
+ClearTimer( id )
+
+//Misc
+int RGB(r,g,b)
+int GetTickCount()
+int GetRandomNumber(min,max)
+int ToggleScreenMode()
+bool x,y,width,height IntersectRect(x1,y1,width1,height1,x2,y2,width2,height2)
