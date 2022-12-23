@@ -1,0 +1,251 @@
+#include "ShootBalloonDemo.h"
+#include <time.h>
+/***************************************************************************
+	构造函数和析构函数
+**************************************************************************/
+CShootBalloonDemo::CShootBalloonDemo(int fps):CGame(fps)
+{
+	ShowCursor(false);// 隐藏系统光标
+}
+
+CShootBalloonDemo::~CShootBalloonDemo(void)
+{   //析构时释放分配的内存
+	for(int i=0;i<nAliveBalloon;++i)
+	{
+		delete pAliveBalloon[i];
+	}
+	for(int i=0;i<nDeadBalloon;++i)
+	{
+		delete pDeadBalloon[i];
+	}
+	ShowCursor(true);//显示系统光标
+}
+/***************************************************************************
+	重写Init函数完成资源加载和游戏初始化
+**************************************************************************/
+void CShootBalloonDemo::Init()
+{	
+	srand(time(NULL));	//初始化随机数种子
+	nAliveBalloon = 0;	//开始时，活动气球数为0
+	nDeadBalloon = 0;	//开始时，消亡气球数为0
+	
+	//补充代码，加载气球、光标、分数显示的纹理资源
+	//...
+	
+	//创建光标精灵
+	pFrontSight = pSpriteManager->CreateSprite(TEXT("FrontSight"));
+	pFrontSight->SetTransparent(true);
+	POINT pt = {16,16};
+	pFrontSight->SetHotSpot(pt);
+
+	//初始时，创建10个气球
+	for ( int i=0;i<10;++i)
+	{
+		pAliveBalloon[nAliveBalloon++] =  CreateNewBalloon();
+	}
+	
+	score = 0;
+	nDigit = 0;//显示分数的位数的下标序号
+}
+
+/***************************************************************************
+	创建一个气球，即new一个Balloon结构，然后将其属性填充完整，
+**************************************************************************/
+Balloon *CShootBalloonDemo::CreateNewBalloon()
+{
+	//补充代码实现：
+	//创建CSprite对象，随机一种style，
+	//将精灵纹理设置为style所代表的纹理截取位置
+	//设置透明
+	//使用GetRandSpeed取得一个随机速度
+	//new一个Balloon结构,并填充各成员
+
+	return pBalloon;
+}
+
+/***************************************************************************
+	产生[100-300)之间的随机数
+**************************************************************************/
+float CShootBalloonDemo::GetRandSpeed()
+{
+	return 100 + rand() % 300;
+}
+
+/***************************************************************************
+	更新得分记录
+**************************************************************************/
+void CShootBalloonDemo::UpdateScore()
+{	
+	int tmp = score;
+	int pos = 0;	
+	int x = rectClient.right - 50;
+	int y = 20;
+	while(true)//通过循环取余的方式得到计分的每一位
+	{
+		int digit = tmp % 10;//对10取余，得到个位数
+		CSprite *pSprite = NULL;
+		if (pos >= nDigit)	//如果计分的位数比之前多一位
+		{					//则新创建一个精灵显示计分中的1位
+			pSprite = pSpriteManager->CreateSprite(TEXT("Digit"),10,10,12,20);
+			pSprite->SetZOrder(999);
+			pSpriteManager->ReZOrder(pSprite);
+			pSprite->SetTransparent(true);
+			pScore[nDigit++] = pSprite;	//存放到计分数组中
+		}
+		else
+		{	//否则，则得到当前位序号对应在pScore数组中的精灵
+			pSprite = pScore[pos];
+		}
+		++pos;  //位序号加1
+		pSprite->SetTexturePos(digit * 12,0);//根据该位的数值截取正确的纹理坐标	
+		x -= 14;
+		pSprite->SetPos(x,y);
+		tmp /= 10;			//数值整除10，得到去掉个位的剩余数值
+		if (tmp == 0)
+		{
+			break;
+		}
+	}
+}
+/***************************************************************************
+	重写Updatet函数完成打气球的游戏逻辑
+**************************************************************************/
+void CShootBalloonDemo::Update(float fDeltaTime)
+{
+	static float time = 0;
+	time += fDeltaTime;
+	CGame::Update(fDeltaTime);//调用基类的Update函数通知每个精灵更新自身
+	for (int i=0;i<nAliveBalloon;++i)//计算每个存活气球的位移
+	{
+		//取得Balloon结构中的CSprite指针
+		//修改它的pos为原来的y按照fSpeed*时间的逻辑递减（气球向上升）
+		//x不变
+	}
+	CheckOutOfBound();	//检查是否有气球越界
+	if (time >= 2)		//如果时间大于固定的时间间隔2秒
+	{
+		time = 0;
+		AddBalloons();	//增加气球	
+	}
+	UpdateScore();		//更新得分
+	
+}
+/***************************************************************************
+	气球越界检查
+**************************************************************************/
+void CShootBalloonDemo::CheckOutOfBound()	//检查是否越界
+{
+	int delCount = 0;
+	Balloon *pDelBalloons[MAX_BALLOONS];
+	for(int i=0;i<nAliveBalloon;++i)	//遍历整个存活气球数组
+	{
+		CSprite *pBalloonSprite = pAliveBalloon[i]->pBalloon;   //得到每个气球精灵
+		float x = pBalloonSprite->GetXPos();					//得到每个精灵的位置
+		float y = pBalloonSprite->GetYPos();
+		if (y<-85)												//判断y坐标是否越出屏幕
+		{
+			pAliveBalloon[i]->pBalloon->SetVisible(false);		//将气球的可见性设置为false	
+			pDelBalloons[delCount++] = pAliveBalloon[i];		//将消亡的气球暂存到一个临时数组	
+		}
+	}
+	for(int i=0;i<delCount;++i)		//将所有要消亡的气球存到消亡数组里，并将它们从存活气球数组中移除
+	{
+		if(nDeadBalloon < MAX_BALLOONS)
+		{
+			pDeadBalloon[nDeadBalloon++] = pDelBalloons[i];
+		}
+		DeleteBulloonFromArray(pAliveBalloon,&nAliveBalloon,pDelBalloons[i]);
+	}
+}
+/***************************************************************************
+	从指定数组中删除一个气球
+**************************************************************************/
+void CShootBalloonDemo::DeleteBulloonFromArray(
+		Balloon **pArray,		//要删除的数组
+		int *pnArraySize,		//记录数组的长度的指针变量
+		Balloon *pBalloon		//要删除的气球
+	)
+{
+	int pos = *pnArraySize;	
+	//遍历找到要删除的气球在数组中的下标
+	for(int i=0;i< *pnArraySize;++i)
+	{
+		if (pArray[i] == pBalloon)
+		{
+			pos = i;
+			break;
+		}
+	}
+	//该位置之后的气球顺序前移
+	for(int i = pos;i< *pnArraySize-1;++i)
+	{
+		pArray[i] = pArray[i+1];
+	}
+	
+	if (pos !=  *pnArraySize)
+	{
+		//如果真的删除了一个气球，则数组最后一个气球指针设为NULL
+		pArray[*pnArraySize-1] = NULL;
+		//数组长度减1
+		--*pnArraySize;
+	}
+}
+/***************************************************************************
+	添加气球
+**************************************************************************/
+void CShootBalloonDemo::AddBalloons()
+{
+	//循环添加气球，最多增加10个
+	for (int i= 0;i< 10;++i)
+	{
+		//如果大于允许的最大气球数，则退出
+		if (nAliveBalloon >= MAX_BALLOONS -1)
+		{
+			break;
+		}
+		Balloon *pNewBalloon = NULL;
+		if (nDeadBalloon >0)//如果消亡数组里有气球
+		{
+			pNewBalloon = pDeadBalloon[nDeadBalloon-1];//从消亡数组尾部拿出一个气球
+			DeleteBulloonFromArray(pDeadBalloon,&nDeadBalloon,pNewBalloon);//将其从消亡数组中移除
+			//重新个这个气球赋随机坐标
+			pNewBalloon->pBalloon->SetPos(rand() % (rectClient.right - rectClient.left),rectClient.bottom + 85);
+			pNewBalloon->fSpeed =GetRandSpeed();//给这个气球赋值速度
+			pNewBalloon->pBalloon->SetVisible(true);	//重设其visible为可见
+			pNewBalloon->type = rand() % 4;				//在4种气球类型中随机选择一种
+			pNewBalloon->pBalloon->SetTexturePos(pNewBalloon->type * 64 , 0);//根据气球类型设置纹理坐标
+		}
+		else	//消亡数组里没有气球
+		{
+			pNewBalloon = CreateNewBalloon(); //重新产生一个
+		}
+		//不管是从消亡数组里复活的气球还是重新产生的气球，都把它们放到存活数组中
+		pAliveBalloon[nAliveBalloon++] = pNewBalloon;
+	}
+}
+
+
+/***************************************************************************
+	重写HandleLMouseDown函数，处理鼠标左键单击事件
+**************************************************************************/
+void CShootBalloonDemo::HandleLMouseDown(WPARAM wParam, LPARAM lParam)
+{
+	//补充代码，响应鼠标单击事件
+	//获取鼠标位置
+	//遍历存活数组，依次检测是否精灵与鼠标碰撞
+	//若有，则：分数增加；精灵设置不可见；精灵放入死亡数组尾
+	//	从存活数组中删除该精灵，可使用DeleteBulloonFromArray函数；返回
+	//若无，则返回
+	
+}
+/***************************************************************************
+	重写HandleMouseMove函数，处理鼠标移动事件
+**************************************************************************/
+void CShootBalloonDemo::HandleMouseMove(WPARAM wParam,LPARAM lParam)
+{	//处理鼠标移动事件，让光标精灵随鼠标移动而移动
+	POINT pt;
+	pt.x = LOWORD(lParam);
+	pt.y = HIWORD(lParam);
+	//ScreenToClient(hWnd,&pt);
+	pFrontSight->SetPos(pt.x,pt.y);
+}
