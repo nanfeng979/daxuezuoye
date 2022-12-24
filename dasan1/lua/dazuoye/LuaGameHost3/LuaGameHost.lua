@@ -1,11 +1,11 @@
-WINDOW_WIDTH    =   800 * 2
+WINDOW_WIDTH    =   800 * 1
 WINDOW_HEIGHT   =   600 * 1
 WINDOW_WIDTH_LOCAL    =   800
 WINDOW_HEIGHT_LOCAL   =   600
 BPP             =   16
 FULLSCREEN		=   false
 GAME_TITLE      =   "2220631136锟斤拷锟斤拷锟斤拷锟斤拷戏"
-gameData        = {mapLen = 2, speed = 4, isOver = false, isQuit = false}
+gameData        = {mapLen = 2, speed = 4, isOver = false, isQuit = false, isStart = false, keyStatus = {spaceDown = true}}
 
 
 distance = 0
@@ -19,12 +19,12 @@ end
 -- todo 写成和Sprite一样
 -- 玩家 -- [framse:总帧数, frame:当前第几帧, jsjump:正在跳, isDown:正在掉, jumpTime:悬空的时间, jumpTimer:悬空的定时器, canKeyDown:可以接收键盘消息]
 playerInitData = {x = 200, y = 400, w = 100, h = 102}
-playerData      = {x = 200, y = 400, w = 100, h = 102, frames = 8, frame = 1, isjump = false, isDown = false, jumpTime = 1.5, jumpTimer = 1.5, canKeyDown = true} -- 包含Ani
+playerData      = {x = 200, y = 400, w = 100, h = 102, frames = 8, frame = 1, isRun = true, isJump = false, isDown = false, jumpTime = 2, jumpTimer = 2, canKeyDown = true} -- 包含Ani
 
 -- 地面 -- [dcol: 修正碰撞范围]
 groundData      = {}
 for i = 1, gameData.mapLen do
-    groundData[i] = {x = (i - 1) * WINDOW_WIDTH_LOCAL, y = 460, w = 672 - 100, h = 149, visible = true, collisionable = true, dcol = {dw = 60, dh = 0}}
+    groundData[i] = {x = (i - 1) * WINDOW_WIDTH_LOCAL, y = 460, w = 672 - 100, h = 149, visible = true, collisionable = true, dcol = {dw = 60, dh = 502 - 460}}
 end
 
 -- 星星
@@ -38,7 +38,7 @@ getStarLock     = false
 -- 椅子
 tableData        = {scale = {x = 1, y = 1}, random = true}
 for i = 1, gameData.mapLen do
-    tableData[i] = {x = (i - 1) * WINDOW_WIDTH_LOCAL, y = 440, w = 150, h = 84, collisionable = false, visible = true, name = "table"}
+    tableData[i] = {x = (i - 1) * WINDOW_WIDTH_LOCAL, y = 440, w = 150, h = 84, collisionable = true, visible = true, name = "table", dcol = {dw = 100, dh = 0}}
 end
 
 
@@ -98,6 +98,11 @@ function LoadImages()
 end
 
 function HandleFrame()
+    --if not gameData.isStart then
+    --    offset.x = 0
+    --end
+    
+
     if gameData.isQuit then
         return 1
     end
@@ -127,8 +132,8 @@ function HandleFrame()
     
     -- 碰撞
     collider(starData, playerData, addStarNum) -- 星星与玩家
-    collider(tableData, playerData, pushBackPlayer) -- 椅子与玩家
-    collider(groundData, playerData, stakePlayer) -- 地面与玩家
+    collider(tableData, playerData, tableWithPlayer) -- 椅子与玩家
+    collider(groundData, playerData, groundWithPlayer) -- 地面与玩家
 
 
     --if not GetMIDIStatus(bgMusic) then
@@ -157,6 +162,28 @@ function DrawBg()
     end
 end
 
+-- 自定义物理引擎 start
+-- 向后推玩家
+function pushBackPlayer(obj1, obj2)
+    if obj2.y + obj2.h > obj1.y + obj1.dcol.dh then
+        obj2.x = obj2.x - gameData.speed
+    end
+end
+
+-- 支撑玩家
+function stakePlayer(obj1, obj2)
+    if obj2.y + obj2.h > obj1.y + obj1.dcol.dh
+        and obj2.y + obj2.h < obj1.y + obj1.dcol.dh + 10 then
+        --  and not obj2.isDown 
+        obj2.y = obj1.y + obj1.dcol.dh - obj2.h
+        obj2.isRun = true
+        obj2.isJump = false
+        obj2.isDown = false
+    end
+end
+
+-- 自定义物理引擎 end
+
 -- 自定义函数 start
 -- 增加已经获得的星星的个数
 function addStarNum(obj1, obj2)
@@ -166,24 +193,27 @@ function addStarNum(obj1, obj2)
     end
 end
 
--- 向后推玩家
-function pushBackPlayer(obj1, obj2)
-    obj2.x = obj2.x - gameData.speed
+-- 椅子与玩家的交互
+function tableWithPlayer(obj1, obj2)
+    stakePlayer(obj1, obj2)
+    pushBackPlayer(obj1, obj2)
+    
 end
 
--- 地面支撑玩家
-function stakePlayer(obj1, obj2)
-    if obj2.y > playerInitData.y and not playerData.isDown then
-        obj2.y = playerInitData.y
-    end
+-- 地面与玩家的交互
+function groundWithPlayer(obj1, obj2)
+    stakePlayer(obj1, obj2)
+    pushBackPlayer(obj1, obj2)
     
-    TextOut("isCollider", 400, 200, RGB(255, 0, 0))
 end
+
+
+
 
 -- 自定义函数 end
 
 -- 碰撞函数
-function collider(obj1s, obj2, action) -- todo: 获得星星函数要独立出来
+function collider(obj1s, obj2, action)
     for i = 1, gameData.mapLen do
         if not obj1s[i].dcol then
             obj1s[i].dcol = {dw = 0, dh = 0}
@@ -194,7 +224,7 @@ function collider(obj1s, obj2, action) -- todo: 获得星星函数要独立出来
             obj1s[i].x <= obj2.x + obj2.w and
             obj1s[i].x + obj1s[i].w - obj1s[i].dcol.dw >= obj2.x and
             obj1s[i].y + obj1s[i].h >= obj2.y and
-            obj1s[i].y <= obj2.y + obj2.h
+            obj1s[i].y + obj1s[i].dcol.dh <= obj2.y + obj2.h
                 then
             action(obj1s[i], obj2)
         end
@@ -268,24 +298,24 @@ function DrawAni(aniObj, FPS)
     end
 end
 
+-- 渲染玩家
 function DrawPlayer()
     -- 跳跃时控制最高距离
     if playerData.isJump and playerData.y <= 280 then
         playerData.y = 280
     end
     -- 跳跃后降落时控制最低距离
-    if playerData.isJump and playerData.y >= 400 then
-        if not playerData.isDown then
-            playerData.y = 400
-        end
-       
-    end
+    --if playerData.isJump and playerData.y >= 400 then
+    --    if not playerData.isDown then
+    --        playerData.y = 400
+    --    end
+    --end
     
     -- 检测是否掉下地面
-    if playerData.y > 400 then
+    if playerData.y > groundData[1].y - groundData[1].dcol.dh then
         playerData.isDown = true
-    else
-        playerData.isDown = false
+    --else
+    --    playerData.isDown = false
     end
     
     -- 定时器计算
@@ -293,20 +323,57 @@ function DrawPlayer()
         playerData.jumpTimer = playerData.jumpTimer - 1 / (1000 / 12)
     else
         playerData.isJump = false
+
     end
+    
     
     if playerData.isJump then
         playerData.y = playerData.y - 5
+    end
+    
+    
+    
+    
+    if playerData.isJump then
+        PaintImage(playerData.dumpUpImg, playerData.x, playerData.y) -- 上升
+    elseif playerData.isDown then
+        PaintImage(playerData.dumpDownImg, playerData.x, playerData.y) -- 降落
+    else
+        if playerData.y + playerData.h < groundData[1].y - groundData[1].dcol.dh and not playerData.isRun then -- 上升后下落
+            PaintImage(playerData.dumpDownImg, playerData.x, playerData.y) -- 降落
+        elseif playerData.isRun then
+            playerData.canKeyDown = true -- 恢复接收键盘消息
+            playerData.jumpTimer = playerData.jumpTime -- 重置定时器   
+            DrawAni(playerData, playerFPS)  -- 渲染动画
+        end
+        
+    end
+    
+    --[[
+    if playerData.isJump then
+        playerData.y = playerData.y - 5
         TextOut(playerData.jumpTimer, 300, 300, RGB(255, 0, 0))
-        PaintImage(playerData.dumpUpImg, playerData.x, playerData.y)
-    elseif not playerData.isJump and playerData.y < 400 then
-        PaintImage(playerData.dumpDownImg, playerData.x, playerData.y)
+        PaintImage(playerData.dumpUpImg, playerData.x, playerData.y) -- 上升
+    elseif playerData.isDown then
+        TextOut(3, 400, 300, RGB(255, 0, 0))
+        PaintImage(playerData.dumpDownImg, playerData.x, playerData.y) -- 降落
+    elseif not playerData.isJump and playerData.y < playerInitData.y then -- 防止滞空
+        playerData.canKeyDown = true -- 恢复接收键盘消息
+        --playerData.jumpTimer = playerData.jumpTime -- 重置定时器
+        TextOut(2, 400, 300, RGB(255, 0, 0))
+        --PaintImage(playerData.dumpDownImg, playerData.x, playerData.y) -- 降落
+ 
+        DrawAni(playerData, playerFPS)  -- 渲染动画
+
+        --
+       
+    
     else
         playerData.canKeyDown = true -- 恢复接收键盘消息
         playerData.jumpTimer = playerData.jumpTime -- 重置定时器
         DrawAni(playerData, playerFPS)  -- 渲染动画
     end
- 
+    ]]-- 
 end
 
 -- 绘制UI函数
@@ -323,10 +390,10 @@ function DrawUI()
     
     TextOut("当前获得的星星个数为：" .. tostring(getStarsNum), 100, 100, RGB(255, 0, 0))
     TextOut(playerData.y, 200, 200, RGB(255, 0, 0))
-    if playerData.isJump then
-        TextOut("yes", 300, 200, RGB(255, 0, 0))
+    if playerData.isDown then
+        TextOut("isDown", 300, 200, RGB(255, 0, 0))
     else 
-        TextOut("no", 300, 200, RGB(255, 0, 0))
+        TextOut("noDown", 300, 200, RGB(255, 0, 0))
     end
     
 end
@@ -335,12 +402,22 @@ end
 function InputMessage()
     --if GetKeyAction(DIK_SPACE, true) then
     if GetKeyState(DIK_SPACE) then
-        if playerData.canKeyDown then
+        if playerData.canKeyDown and not gameData.keyStatus.spaceDown then
             playerData.isJump = true
+            playerData.isRun = false
+            gameData.keyStatus.spaceDown = true
             playerData.canKeyDown = false
         end
-    else
+    elseif gameData.keyStatus.spaceDown then -- 空格键松开后
         playerData.isJump = false
+        playerData.isDown = true
+        gameData.keyStatus.spaceDown = false
+    end
+    
+    -- 开始游戏
+    if GetKeyState(DIK_TAB) then
+        TextOut("tab", 70, 70, RGB(255, 0, 0))
+        gameData.isStart = true
     end
     
     -- 关闭游戏
@@ -361,7 +438,7 @@ function globlLogin()
         gameData.isOver = true
     end
     
-    
+    -- 游戏结束
     if gameData.isOver then
         gameData.speed = 0
     end
@@ -370,6 +447,7 @@ end
 -- 物理特性
 function physic(obj)
     obj.y = obj.y + 3
+    obj.isDown = true
 end
 
 
